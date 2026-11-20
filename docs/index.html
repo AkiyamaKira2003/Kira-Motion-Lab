@@ -5,8 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Kira Motion Lab — accessible CSS and JavaScript micro-interactions built with performance in mind.">
   <meta name="color-scheme" content="dark light">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23142743'/%3E%3Ctext x='32' y='46' text-anchor='middle' fill='%23b9edff' font-size='46' font-weight='800' font-family='Arial'%3EK%3C/text%3E%3C/svg%3E">
   <title>Kira Motion Lab — Interface Motion Playground</title>
   <link rel="stylesheet" href="./styles.css">
+  <link rel="stylesheet" href="./atlas.css">
   <script type="module" src="./app.js"></script>
 </head>
 <body>
@@ -18,6 +20,8 @@
       </a>
       <nav aria-label="Project navigation">
         <a href="#experiments">Experiments</a>
+        <a href="#atlas">Motion Atlas</a>
+        <a href="#sources">Global sources</a>
         <a href="#principles">Principles</a>
         <a href="https://github.com/AkiyamaKira2003/Kira-Motion-Lab">Source code</a>
       </nav>
@@ -28,13 +32,14 @@
     </header>
     <main id="top">
       <div class="hero">
-        <div class="eyebrow"><span class="status-dot"></span> INTERACTION ENGINEERING · COLLECTION 01</div>
+        <div class="eyebrow"><span class="status-dot"></span> WORLD MOTION ATLAS · CURATED RESEARCH + ORIGINAL DEMOS</div>
         <h1>Motion with <span>meaning.</span><br>Not just movement.</h1>
-        <p class="intro">A tiny, open-source playground for micro-interactions that feel alive without turning the main thread into a furnace. Three experiments, real reusable code, accessible fallbacks.</p>
+        <p class="intro">Explore <strong><span id="atlas-total">39</span> original motion demos</strong>, inspired by the world's leading animation libraries. Test each pattern, explore the implementation, and learn how to build interfaces that move beautifully without wasting performance.</p>
         <div class="facts">
           <span>◈ 0 runtime dependencies</span>
           <span>◈ Transform-first motion</span>
           <span>◈ Accessible by design</span>
+          <span>◈ Curated from <span id="atlas-sources-total">16</span> global projects</span>
         </div>
       </div>
       <div class="section-heading" id="experiments">
@@ -91,6 +96,33 @@
           </div>
         </section>
       </div>
+      <section class="atlas-section" id="atlas" aria-labelledby="atlas-title">
+        <div class="atlas-heading">
+          <div>
+            <div class="eyebrow">EXPLORE / INTERACT / LEARN</div>
+            <h2 id="atlas-title">The World Motion Atlas<span class="atlas-heading-dot">.</span></h2>
+            <p class="atlas-intro">36 more live experiments — made in this project, based on patterns popularized by leading global libraries. All previews are hosted locally on this site.</p>
+          </div>
+          <div class="atlas-stat"><strong>36</strong><span>ATLAS PATTERNS</span></div>
+        </div>
+        <div class="atlas-toolbar">
+          <label class="atlas-search-wrap" for="atlas-search"><span class="atlas-search-icon" aria-hidden="true">⌕</span><input type="search" id="atlas-search" autocomplete="off" placeholder="Search effects, categories, engines…" aria-label="Search motion effects"></label>
+          <label class="atlas-select-wrap">Sort by <select id="atlas-sort" aria-label="Sort motion effects"><option value="popular">Source popularity</option><option value="name">Name A–Z</option><option value="category">Category</option></select></label>
+          <label class="atlas-speed-wrap" for="atlas-speed">Speed <input type="range" id="atlas-speed" min="0.4" max="2" step="0.1" value="1" aria-label="Animation speed multiplier"><output id="atlas-speed-value" for="atlas-speed">1.0×</output></label>
+        </div>
+        <div class="atlas-categories" id="atlas-categories" aria-label="Filter by category"></div>
+        <div class="atlas-result-bar"><span id="atlas-count" role="status" aria-live="polite">36 of 36 original demos</span><span>Motion source popularity ≠ individual effect likes</span></div>
+        <div class="atlas-grid" id="atlas-grid" aria-label="Interactive motion gallery"></div>
+        <div class="atlas-disclaimer">
+          <strong>Built here, inspired worldwide.</strong> Every demo is independently implemented in this repository using native browser APIs. Library names indicate research references — not copied code, official endorsements, licensing grants, or verified user counts for the individual motion.
+        </div>
+      </section>
+      <section class="sources-section" id="sources" aria-labelledby="sources-heading">
+        <div class="eyebrow">CURATED WORLDWIDE / GITHUB REFERENCES</div>
+        <h2 id="sources-heading">The libraries behind the inspiration</h2>
+        <p>Source repositories ranked by GitHub stars, captured on <time id="atlas-stars-date" datetime="2026-11-20">2026-11-20</time>. Popularity changes over time; visit each source for current stats, licenses and original examples. Repository stars do not measure motion-specific traffic.</p>
+        <div id="source-list" class="sources-grid" aria-label="Reference animation libraries"></div>
+      </section>
       <section class="principles" id="principles">
         <div><div class="eyebrow">ENGINEERING PRINCIPLES</div><h2>A good animation knows<br>when <em>not</em> to move.</h2></div>
         <div class="principle-grid">

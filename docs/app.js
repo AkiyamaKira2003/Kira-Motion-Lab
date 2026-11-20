@@ -1,4 +1,5 @@
 import { bindTilt } from './motion.js';
+import './atlas.js';
 
 const doc = document.documentElement;
 const motionButton = document.getElementById('motion-toggle');
@@ -8,12 +9,24 @@ const waveform = document.querySelector('.wave-track');
 const waveButton = document.getElementById('wave-toggle');
 
 const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+// Keep original hero experiments idle while the user browses the long Atlas.
+if (typeof IntersectionObserver !== 'undefined') {
+  const specimenObserver = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      entry.target.classList.toggle('is-visible', entry.isIntersecting);
+    }
+  }, { rootMargin: '120px 0px', threshold: .01 });
+  for (const specimen of document.querySelectorAll('.specimen')) {
+    specimenObserver.observe(specimen);
+  }
+}
 let userOverrodeMotion = false;
 function setMotion(reduced) {
   doc.dataset.motion = reduced ? 'reduced' : 'full';
   motionButton.setAttribute('aria-pressed', String(reduced));
   motionButton.textContent = reduced ? 'Motion off' : 'Motion on';
   if (reduced) tilt.reset();
+  window.dispatchEvent(new Event('kira:motionchange'));
 }
 const tilt = bindTilt(document.querySelector('.tilt-card'), {
   maxDegrees: 9,

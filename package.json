@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "test": "node --test",
-    "check": "node --check docs/app.js && node --check docs/motion.js && npm test"
+    "check": "node --check docs/app.js && node --check docs/motion.js && node --check docs/catalog.js && node --check docs/sources.js && node --check docs/sorting.js && node --check docs/patterns.js && node --check docs/atlas.js && npm test"
   },
   "engines": { "node": ">=20" }
 }
