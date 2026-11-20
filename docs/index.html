@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="en" data-theme="dark" data-motion="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kira Motion Lab — accessible CSS and JavaScript micro-interactions built with performance in mind.">
+  <meta name="color-scheme" content="dark light">
+  <title>Kira Motion Lab — Interface Motion Playground</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.js"></script>
+</head>
+<body>
+  <div class="page">
+    <header class="topbar">
+      <a href="#top" class="brand" aria-label="Kira Motion Lab home">
+        <span class="mark" aria-hidden="true">K</span>
+        <span>KIRA<span class="brand-dot">.</span>MOTION <span class="brand-light">LAB</span></span>
+      </a>
+      <nav aria-label="Project navigation">
+        <a href="#experiments">Experiments</a>
+        <a href="#principles">Principles</a>
+        <a href="https://github.com/AkiyamaKira2003/Kira-Motion-Lab">Source code</a>
+      </nav>
+      <div class="controls">
+        <button type="button" id="theme-toggle" aria-pressed="false">Dark theme</button>
+        <button type="button" id="motion-toggle" aria-pressed="false">Motion on</button>
+      </div>
+    </header>
+    <main id="top">
+      <div class="hero">
+        <div class="eyebrow"><span class="status-dot"></span> INTERACTION ENGINEERING · COLLECTION 01</div>
+        <h1>Motion with <span>meaning.</span><br>Not just movement.</h1>
+        <p class="intro">A tiny, open-source playground for micro-interactions that feel alive without turning the main thread into a furnace. Three experiments, real reusable code, accessible fallbacks.</p>
+        <div class="facts">
+          <span>◈ 0 runtime dependencies</span>
+          <span>◈ Transform-first motion</span>
+          <span>◈ Accessible by design</span>
+        </div>
+      </div>
+      <div class="section-heading" id="experiments">
+        <div><div class="eyebrow">LIVE DEMONSTRATIONS</div><h2>Explore the experiments</h2></div>
+        <span class="section-note">Pointer-aware / keyboard-friendly / responsive</span>
+      </div>
+      <div class="gallery">
+        <section class="specimen tilt-specimen" aria-labelledby="tilt-heading">
+          <div class="specimen-head"><div class="serial">01 / TACTILE SURFACE</div><span class="flag">POINTER INPUT</span></div>
+          <div class="tilt-stage">
+            <div class="tilt-card" tabindex="0" aria-label="Glass card; move your pointer to gently rotate it">
+              <div class="glass-glare"></div>
+              <div class="glass-overline">KIRA / LAB EXCLUSIVE</div>
+              <div class="glass-monogram">K<span class="sparkle">✦</span></div>
+              <div class="glass-caption"><strong>Responsive glass</strong><span>Move your pointer</span></div>
+            </div>
+          </div>
+          <div class="specimen-bottom">
+            <div><h3 id="tilt-heading">Magnetic glass</h3><p>Pointer-driven tilt, capped at 9°. Updates are batched into animation frames and stop instantly when disabled.</p></div>
+            <button class="copy" type="button" data-copy="tilt" aria-label="Copy tilt JavaScript">Copy JS</button>
+          </div>
+        </section>
+        <section class="specimen orbit-specimen" aria-labelledby="orbit-heading">
+          <div class="specimen-head"><div class="serial">02 / CELESTIAL SYSTEM</div><span class="flag">CSS ONLY</span></div>
+          <div class="orbit-stage">
+            <div class="orbit-halo"></div>
+            <div class="orbital orbit-one"></div>
+            <div class="orbital orbit-two"></div>
+            <div class="orbital orbit-three"></div>
+            <div class="orbit-core">K</div>
+            <i class="orb-star star-a" aria-hidden="true"></i><i class="orb-star star-b" aria-hidden="true"></i>
+          </div>
+          <div class="specimen-bottom">
+            <div><h3 id="orbit-heading">Celestial orbit</h3><p>Gentle orbital motion with CSS transforms, subtle depth and a stable center. Still elegant without animation.</p></div>
+            <button class="copy" type="button" data-copy="orbit" aria-label="Copy orbit CSS">Copy CSS</button>
+          </div>
+        </section>
+        <section class="specimen wave-specimen" aria-labelledby="wave-heading">
+          <div class="specimen-head"><div class="serial">03 / FLOW SYSTEM</div><span class="flag">COMPOSITOR MOTION</span></div>
+          <div class="wave-stage">
+            <div class="wave-grid"></div>
+            <div class="wave-track" role="img" aria-label="Stylized original animated bars, not audio playback">
+              <span style="--i:0;--h:29"></span><span style="--i:1;--h:45"></span><span style="--i:2;--h:32"></span><span style="--i:3;--h:62"></span>
+              <span style="--i:4;--h:77"></span><span style="--i:5;--h:58"></span><span style="--i:6;--h:90"></span><span style="--i:7;--h:69"></span>
+              <span style="--i:8;--h:43"></span><span style="--i:9;--h:76"></span><span style="--i:10;--h:98"></span><span style="--i:11;--h:81"></span>
+              <span style="--i:12;--h:57"></span><span style="--i:13;--h:90"></span><span style="--i:14;--h:72"></span><span style="--i:15;--h:42"></span>
+              <span style="--i:16;--h:60"></span><span style="--i:17;--h:86"></span><span style="--i:18;--h:58"></span><span style="--i:19;--h:75"></span>
+              <span style="--i:20;--h:46"></span><span style="--i:21;--h:70"></span><span style="--i:22;--h:45"></span><span style="--i:23;--h:28"></span>
+            </div>
+          </div>
+          <div class="specimen-bottom">
+            <div><h3 id="wave-heading">Chromatic pulse</h3><p>Original abstract visual rhythm, powered by CSS scale transforms. No audio processing, timers or per-frame JavaScript.</p></div>
+            <div class="buttons"><button class="copy" type="button" id="wave-toggle" aria-pressed="false">Pause</button><button class="copy" type="button" data-copy="wave">Copy CSS</button></div>
+          </div>
+        </section>
+      </div>
+      <section class="principles" id="principles">
+        <div><div class="eyebrow">ENGINEERING PRINCIPLES</div><h2>A good animation knows<br>when <em>not</em> to move.</h2></div>
+        <div class="principle-grid">
+          <div><span>01 /</span><strong>Compositor first</strong><p>Favor transform and opacity over layout-affecting changes to reduce rendering work.</p></div>
+          <div><span>02 /</span><strong>Respect the user</strong><p>Honor reduced-motion preference by default and make motion controls easy to find.</p></div>
+          <div><span>03 /</span><strong>Cleanup matters</strong><p>Cancel pending frames and detach event listeners when a component is destroyed.</p></div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <span>© 2026 Akiyama Kira · Built to be inspected, not just admired.</span>
+      <span><a href="https://github.com/AkiyamaKira2003/Kira-Motion-Lab">View source</a> · <a href="https://web.dev/articles/animations-guide">Performance reference</a></span>
+    </footer>
+  </div>
+  <p id="announcement" class="screen-reader-only" aria-live="polite"></p>
+</body>
+</html>
