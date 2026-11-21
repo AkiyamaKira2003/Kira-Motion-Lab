@@ -18,6 +18,23 @@ A curated **39-demo** motion showcase: 36 new patterns in an interactive searcha
 
 Use **search**, **nine category filters**, **sort by reference-source GitHub stars**, **speed control**, **light/dark mode**, **reduce motion**, and expandable implementation recipes. Each card links directly to a relevant international source.
 
+### Share an individual motion
+
+Use the **Direct link** control on any Atlas card to open its own URL, then
+copy that URL from the browser address bar to share the example. For instance,
+[`#motion-ripple`](https://akiyamakira2003.github.io/Kira-Motion-Lab/#motion-ripple)
+opens the **Click feedback** example; every one of the 36 Atlas examples has
+a stable `#motion-<id>` fragment. A deep link is keyboard accessible, focuses
+the card on navigation and works with browser Back/Forward. The currently
+linked example stays visible even if the user filters or searches for other
+effects, with an explicit result-count explanation. Invalid or unknown
+fragments are ignored; normal `#atlas`, `#sources`, and `#top` anchors still work.
+
+This is native fragment navigation, **not** an analytics or client-side routing
+framework. The URL itself is the shareable artifact; the control does not need
+clipboard permission. Deep links resolve on static GitHub Pages once the
+updated site is published.
+
 The source popularity ranking reflects the **GitHub stars of the cited library**, captured on **November 20, 2026**. It is **not** an individual animation's likes, visits, popularity ranking or a claim of endorsement. We reference 16 source repositories including Anime.js, Motion, React Bits, GSAP, Lottie-web, Swiper, Magic UI, AutoAnimate, React Spring and more. See [Sources & methodology](./RESEARCH.md).
 
 ## Performance architecture
@@ -64,7 +81,7 @@ The original 3D card API is preserved in [motion.js](./docs/motion.js). The patt
 npm run check
 ~~~
 
-Node's built-in test runner validates distinct catalog entries, source attribution, search and sorting, invalid numbers, particle budgets, safe cleanup, pointer math and presence of accessible controls. GitHub Actions executes the checks on Node 20 and 22 across Windows and Linux.
+Node's built-in test runner validates distinct catalog entries, source attribution, search and sorting, invalid numbers, particle budgets, safe cleanup, pointer math, accessible controls, and valid/invalid deep-link fragments. GitHub Actions executes the checks on Node 20 and 22 across Windows and Linux. For the permalink change, a local browser smoke test also checked dynamic card focus, history navigation, filtering and horizontal overflow at 375px and 1280px; those observations are **not** a performance benchmark or independent accessibility audit.
 
 ## Scope & license
 

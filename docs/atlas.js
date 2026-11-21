@@ -2,6 +2,7 @@ import { patterns, categories, filterPatterns } from './catalog.js';
 import { sources, sourceForPattern, formatStars, popularityDate } from './sources.js';
 import { mountPattern } from './patterns.js';
 import { sortPatterns } from './sorting.js';
+import { fragmentForMotion, parseMotionFragment } from './permalinks.js';
 
 const root = document.getElementById('atlas-grid');
 const count = document.getElementById('atlas-count');
@@ -17,6 +18,8 @@ let category = 'All';
 let observer = null;
 let cleanups = [];
 let renderFrame = null;
+let revealFrame = null;
+let pendingMotion = parseMotionFragment(window.location.hash, patterns);
 const reduced = () => document.documentElement.dataset.motion === 'reduced' ||
   (document.documentElement.dataset.motion === 'auto' &&
     window.matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -31,6 +34,8 @@ function makeElement(tag, className, label = '') {
 function makeCard(pattern, i) {
   const source = sourceForPattern(pattern.id);
   const card = makeElement('article', 'atlas-card');
+  card.id = 'motion-' + pattern.id;
+  card.tabIndex = -1; // Focusable after direct navigation, not an extra Tab stop.
   card.dataset.pattern = pattern.id;
   card.dataset.category = pattern.category;
   const head = makeElement('div', 'atlas-card-head');
@@ -50,6 +55,10 @@ function makeCard(pattern, i) {
   sourceLink.rel = 'noopener noreferrer';
   sourceLink.target = '_blank';
   sourceLink.title = 'Reference library popularity, not likes for this animation';
+  const permalink = makeElement('a', 'atlas-permalink', 'Direct link');
+  permalink.href = fragmentForMotion(pattern.id, patterns);
+  permalink.setAttribute('aria-label', 'Direct link to ' + pattern.title);
+  permalink.title = 'Share a URL that opens this motion';
   const recipe = makeElement('details', 'atlas-recipe');
   const summary = makeElement('summary', '', 'View recipe');
   const pre = makeElement('pre');
@@ -60,7 +69,7 @@ function makeCard(pattern, i) {
   copy.type = 'button';
   copy.dataset.copyRecipe = pattern.id;
   recipe.append(summary, pre, copy);
-  footer.append(sourceLink, recipe);
+  footer.append(sourceLink, permalink, recipe);
   card.append(head, stage, details, footer);
   return card;
 }
@@ -70,6 +79,19 @@ function dispose() {
   observer = null;
   for (const cleanup of cleanups) cleanup();
   cleanups = [];
+}
+function revealMotion(id) {
+  if (revealFrame !== null) cancelAnimationFrame(revealFrame);
+  revealFrame = requestAnimationFrame(() => {
+    revealFrame = null;
+    // The id can only come from a validated catalog record, not raw URL HTML.
+    const card = document.getElementById('motion-' + id);
+    if (!card) return;
+    card.scrollIntoView({ block: 'center', behavior: 'instant' });
+    card.focus({ preventScroll: true });
+    const pattern = patterns.find((item) => item.id === id);
+    announcement.textContent = 'Opened ' + pattern.title + ' motion.';
+  });
 }
 function applyPlaybackRate(container = root) {
   const multiplier = Number(speed.value);
@@ -87,11 +109,27 @@ function applyPlaybackRate(container = root) {
 function render() {
   renderFrame = null;
   dispose();
-  const visible = sortPatterns(filterPatterns(patterns, category, search.value), sort.value);
-  count.textContent = visible.length + ' of ' + patterns.length + ' original demos';
+  const matching = sortPatterns(filterPatterns(patterns, category, search.value), sort.value);
+  const linkedId = parseMotionFragment(window.location.hash, patterns);
+  const linked = linkedId && patterns.find((item) => item.id === linkedId);
+  // Keep the selected shared card reachable even when a different filter or
+  // search would otherwise remove it. Never silently discard the user's filter.
+  const pinned = linked && !matching.some((item) => item.id === linked.id);
+  const visible = pinned ? [linked, ...matching] : matching;
+  count.textContent = matching.length + ' of ' + patterns.length + ' matching demos' +
+    (pinned ? ' · 1 shared motion also shown' : '');
   const fragment = document.createDocumentFragment();
-  visible.forEach((pattern, i) => fragment.append(makeCard(pattern, i)));
+  visible.forEach((pattern, i) => {
+    const card = makeCard(pattern, i);
+    if (pattern.id === linkedId) card.classList.add('is-linked');
+    fragment.append(card);
+  });
   root.replaceChildren(fragment);
+  if (pendingMotion && root.querySelector('[id="motion-' + pendingMotion + '"]')) {
+    const targetId = pendingMotion;
+    pendingMotion = null;
+    revealMotion(targetId);
+  }
 
   if (typeof IntersectionObserver === 'undefined') {
     for (const card of root.querySelectorAll('.atlas-card')) {
@@ -147,6 +185,15 @@ speed.addEventListener('input', () => {
 });
 
 root.addEventListener('click', async (event) => {
+  const shared = event.target.closest('.atlas-permalink');
+  if (shared) {
+    // Clicking the current fragment again does not dispatch `hashchange`.
+    if (shared.hash === window.location.hash) {
+      const id = parseMotionFragment(shared.hash, patterns);
+      if (id) revealMotion(id);
+    }
+    return;
+  }
   const copy = event.target.closest('[data-copy-recipe]');
   if (!copy) return;
   const pattern = patterns.find((item) => item.id === copy.dataset.copyRecipe);
@@ -158,6 +205,17 @@ root.addEventListener('click', async (event) => {
   } catch {
     announcement.textContent = 'Clipboard unavailable. Select the visible recipe text to copy it manually.';
   }
+});
+
+window.addEventListener('hashchange', () => {
+  if (revealFrame !== null) {
+    cancelAnimationFrame(revealFrame);
+    revealFrame = null;
+  }
+  pendingMotion = parseMotionFragment(window.location.hash, patterns);
+  // Hash navigation is separate from search/sort/category. Re-render to pin
+  // the requested card if needed; existing #top/#atlas/#sources still work.
+  scheduleRender();
 });
 
 const orderedSources = Object.values(sources).sort((a, b) => b.stars - a.stars);
